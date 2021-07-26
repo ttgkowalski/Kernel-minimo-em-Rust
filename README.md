@@ -13,7 +13,6 @@ Para cada passo do roadmap terá uma versão traduzida do *[tutorial](#tutorial)
 - rustup component add llvm-tools-preview
 
 ##### [REFERENCES]
-- *[<a id="tutorial">TUTORIAL]* - (https://os.phil-opp.com/minimal-rust-kernel/)
 - *[<a id="versionamento">VERSIONAMENTO DO RUST]* - (https://doc.rust-lang.org/book/appendix-07-nightly-rust.html#choo-choo-release-channels-and-riding-the-trains)
 
 ---
