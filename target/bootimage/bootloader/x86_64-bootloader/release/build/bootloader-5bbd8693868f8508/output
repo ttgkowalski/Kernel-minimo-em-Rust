@@ -1,7 +1,7 @@
-cargo:rerun-if-changed=/home/CardinalAdministrator/Development/Rust/minimal-rust-kernel/Cargo.toml
-cargo:rustc-link-search=native=/home/CardinalAdministrator/Development/Rust/minimal-rust-kernel/target/bootimage/bootloader/x86_64-bootloader/release/build/bootloader-5bbd8693868f8508/out
+cargo:rerun-if-changed=/home/CardinalAdministrator/Development/Rust/Minimal-Kernel-in-Rust/Cargo.toml
+cargo:rustc-link-search=native=/home/CardinalAdministrator/Development/Rust/Minimal-Kernel-in-Rust/target/bootimage/bootloader/x86_64-bootloader/release/build/bootloader-5bbd8693868f8508/out
 cargo:rustc-link-lib=static=kernel_bin-minimal-rust-kernel
 cargo:rerun-if-env-changed=KERNEL
 cargo:rerun-if-env-changed=KERNEL_MANIFEST
-cargo:rerun-if-changed=/home/CardinalAdministrator/Development/Rust/minimal-rust-kernel/target/x86_64-mrk/debug/minimal-rust-kernel
+cargo:rerun-if-changed=/home/CardinalAdministrator/Development/Rust/Minimal-Kernel-in-Rust/target/x86_64-mrk/debug/minimal-rust-kernel
 cargo:rerun-if-changed=build.rs
