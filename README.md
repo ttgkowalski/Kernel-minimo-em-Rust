@@ -1,8 +1,8 @@
-# Kernel mínimo escrito em Rust
+# Kernel mínimo em Rust
 
 Esse projeto está sendo feito com o propósito de aprender a linguagem de programação Rust, o funcionamento de baixo nível do linux e de quebra praticar inglês(Por que não? :))
 
-Para cada passo do roadmap terá uma versão traduzida do [tutorial](#tutorial) seguido em inglês
+Para cada passo do roadmap terá uma versão traduzida do [tutorial](#tutorial) seguido.
 
 ##### [VERSIONS]
 - [rustc]: rustc 1.56.0-nightly (d9aa28767 2021-07-24)
