@@ -109,12 +109,12 @@ Após adicionar o LLD, será necessário também adicionar um campo dizendo que 
 ```json
 "panic-strategy": "abort",
 ```
-Em resumo, [stack unwinding(Rust)](https://doc.rust-lang.org/nomicon/unwinding.html) é o processo que ocorre no lançamento de um "panic"(Exception), onde o "panic" fará que a execução normal da thread pare e chame "destructors"(destruidores) como se cada função instantaneamente retornassem seus resultados. Esse processo é importante porque para otimizar o gerenciamento de memória prevenindo vazamentos.
+Em resumo, [stack unwinding(Rust)](https://doc.rust-lang.org/nomicon/unwinding.html) é o processo que ocorre no lançamento de um "panic"(Exception), onde o "panic" fará que a execução normal da thread pare e chame "destructors"(destruidores) como se cada função instantaneamente retornassem seus resultados. Esse processo é importante para otimizar o gerenciamento de memória prevenindo vazamentos.
 
 * [IMPORTANTE]:
 Você também poderia adicionar o "panic-strategy" no Cargo.toml, mas para esse projeto é necessário que ele esteja nesse JSON de custom-target. Isso porque lá na frente vamos recompilar a lib `core`.
 
-Para lidar com as [interrupções](https://linux-kernel-labs.github.io/refs/heads/master/lectures/interrupts.html)(Eventos que alteram o fluxo padrão de execução de um software) ao nivel do kernel, precisamos desabilitar a redzone. Para fazer isso, adicione o seguinte conteúdo ao JSON:
+Para lidar com as [interrupções](https://linux-kernel-labs.github.io/refs/heads/master/lectures/interrupts.html)(Eventos que alteram o fluxo padrão de execução de um software) ao nível do kernel, precisamos desabilitar a redzone. Para fazer isso, adicione o seguinte conteúdo ao JSON:
 
 ```json
 "disable-redzone": true,
@@ -124,3 +124,4 @@ A redzone, em resumo, é uma importante otimização da
 **ABI**(Application Binary Interface) do **System V** que permite que as funções usem temporariamente os 128 bytes abaixo de sua estrutura de pilha sem ajustar o ponteiro da pilha.
 
 Caso queira uma explicação mais detalhada, você poderá encontrá-la [neste post](https://os.phil-opp.com/red-zone/) do próprio Philip.
+
