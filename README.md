@@ -304,7 +304,7 @@ O bootimage utiliza o target padrão do cargo, mas nós estamos utilizando um ta
 
 ```toml
 [build]
-target = "x86_64-mrk.json.json"
+target = "x86_64-mrk.json"
 ```
 
 Agora sim podemos compilar nosso kernel. Para isso, execute o seguinte comando:
