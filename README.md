@@ -57,7 +57,7 @@ info: override toolchain for '/home/ttgkowalski/Development/Rust/<project_direct
 
 #### *Especificando a arquitetura final para a compilação*:
 
-O cargo pode compilar seu código rust para diversas arquiteturas de CPUs através do parâmetro `--target`.
+O cargo pode compilar seu código Rust para diversas arquiteturas de CPUs através do parâmetro `--target`.
 
 A lista de arquiteturas suportadas pelo cargo encontra-se no [capítulo 7](https://doc.rust-lang.org/nightly/rustc/platform-support.html) da documentação oficial do Rust **nightly**.
 
@@ -97,7 +97,7 @@ Nesse JSON, coloque o seguinte conteúdo:
 }
 ```
 
-A partir desse momento as coisas começam a fazer mais sentido e a tomar forma, repare que os campos "llvm-target" e "os" não possuem sequer a palavra "linux".
+Repare que os campos "llvm-target" e "os" não possuem sequer a palavra "linux".
 Isso porque nós estamos passando para o LLVM que esse código vai rodar em bare-metal, ou seja, direto em um servidor físico dedicado.
 
 Agora vamos substituir o linker padrão da plataforma pelo [LLD](https://lld.llvm.org/) adicionando o seguinte conteúdo ao JSON:
@@ -126,7 +126,8 @@ A redzone, em resumo, é uma importante otimização da
 
 Caso queira uma explicação mais detalhada, você poderá encontrá-la [neste post](https://os.phil-opp.com/red-zone/) do próprio Philipp.
 
-Bom, já estamos quase lá.
+Bom, já estamos na metade do caminho.
+
 Antes de irmos para o código Rust, precisamos ativar e desativar algumas features específicas do nosso target adicionando o seguinte campo ao JSON:
 ```json
 "features": "-mmx,-sse,+soft-float"
@@ -162,9 +163,10 @@ Agora, colocando tudo isso junto, temos o seguinte resultado:
 
 #### *Construindo nosso kernel*:
 
-Para compilar para o nosso próprio target, vamos utilizar um convenção geral no nosso código. Isso significa que o nosso ponto de entrada, ou seja, nossa função principal(entrypoint) não será a main como de costume, mas sim a função _start.
+Para compilar para o nosso próprio target, vamos utilizar uma convenção geral no nosso código. Isso significa que o nosso ponto de entrada, ou seja, nossa função principal(entrypoint) não será a main como de costume, mas sim a função _start.
 
 No tutorial do Philipp ele disse que usaríamos essa convenção do Linux porque o LLVM exigia essa convenção e ele não sabia exatamente o porquê. Mas eu andei pesquisando e eis aqui o motivo:
+
 O uso do _start é meramente convencional. A função principal varia entre os sistemas, compiladores e bibliotecas padrões. Por exemplo, o OS X contém apenas aplicações vinculadas dinamicamente e o próprio [loader](https://embeddedartistry.com/fieldmanual-terms/program-loader/) se encarrega das configurações, então a função principal é realmente a main.
 
 Você poderá encontrar estas informações nessas referências: [[_START function]](#start)
@@ -180,7 +182,7 @@ Adicione o seguinte conteúdo ao arquivo `src/main.rs`
 
 use core::panic::PanicInfo;
 
-/// Essa funcção é chamada quando ocorre algum panic.
+/// Essa função é chamada quando ocorre algum panic.
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
     loop {}
@@ -202,6 +204,7 @@ error[E0463]: can't find crate for `core`
 ```
 
 E deu errado mesmo!
+
 Basicamente, a mensagem de erro está nos informando que o Rust não conseguiu encontrar a biblioteca `core`, que é uma biblioteca entregue junto com o compilador Rust como uma biblioteca precompilada. Ou seja, ela é entregue na lib `std`, a qual desativamos aqui:
 
 ```rust
@@ -233,15 +236,17 @@ Felizmente, o `compiler-buildins` já possui implementações para todas as fun�
 
 Para fazer isso, vamos adicionar essa biblioteca para ser habilitada por padrão pelo cargo na hora de compilar nosso kernel.
 
-###### .cargo/config.toml
 
 ```toml
+# .cargo/config.toml
+
 [unstable]
 build-std-features = ["compiler-builtins-mem"]
 build-std = ["core", "compiler_builtins"]
 ```
 
 Agora sim, configurações finalizadas!
+
 Mas nosso sistema ainda não faz nada, vamos coloca-lo para escrever alguma coisa na tela.
 
 ##### Escrevendo na tela
@@ -274,12 +279,15 @@ Basicamente, nós transformamos o inteiro `0xb8000` em um ponteiro. Então, iter
 
 Para o corpo da do loop, utilizamos o método [offset](https://doc.rust-lang.org/std/primitive.pointer.html#method.offset) para escrever a string byte e sua respectiva cor representada em byte(`0xb` equivale à cor ciano claro).
 
-Repare que, todas as inscrições na tela estão ao redor de um bloco chamado [unsafe](https://doc.rust-lang.org/stable/book/ch19-01-unsafe-rust.html). A razão para isso é que o compilador do Rust não pode provar que os ponteiros que nós criamos são válidos. Eles podem apontar para qualquer lugar e ocasionar uma corrupção de dados. Ao coloca-los dentro de um bloco `unsafe`, estamos dizendo ao compilador Rust que temos absoluta certeza que as operações são válidas.
+Repare que, todas as inscrições na tela estão ao dentro de um bloco chamado [unsafe](https://doc.rust-lang.org/stable/book/ch19-01-unsafe-rust.html).
+
+A razão para isso é que o compilador do Rust não pode provar que os ponteiros que nós criamos são válidos. Eles podem apontar para qualquer lugar e ocasionar uma corrupção de dados. Ao coloca-los dentro de um bloco `unsafe`, estamos dizendo ao compilador Rust que temos absoluta certeza de que as operações são válidas.
 Vale ressaltar que, colocar um código dentro de um bloco `unsafe` não desativa as verificações de segurança do Rust. O `unsafe` apenas nos permite fazer estas [cinco coisas adicionais](https://doc.rust-lang.org/stable/book/ch19-01-unsafe-rust.html#unsafe-superpowers).
 
 #### Rodando o Kernel
 
 Para transformar nosso kernel em uma imagem bootável, precisamos ligá-lo a um bootloader. Para isso, nós vamos utilizar a *crate* [bootloader](https://crates.io/crates/bootloader). Essa crate implementa uma BIOS básica sem utilizar nenhuma dependência do C, apenas Rust e assembly.
+
 Vamos adicionar ao `Cargo.toml` o seguinte conteúdo:
 
 ```toml
