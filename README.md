@@ -125,3 +125,38 @@ A redzone, em resumo, é uma importante otimização da
 
 Caso queira uma explicação mais detalhada, você poderá encontrá-la [neste post](https://os.phil-opp.com/red-zone/) do próprio Philipp.
 
+Bom, já estamos quase lá.
+Antes de irmos para o código Rust, precisamos ativar e desativar algumas features específicas do nosso target adicionando o seguinte campo ao JSON:
+```json
+"features": "-mmx,-sse,+soft-float"
+```
+
+Para ativar ou desativar uma feature precisamos adicionar um sinal de mais(+) ou de menos(-), respectivamente. Repare que cada item é separado por uma vírgula e não pode haver espaços, senão, o LLVM vai falhar ao interpretar as flags.
+
+As features que desativamos `mmx` e `sse` determinam o suporte ao [Single Instruction Multiple Data (SIMD)](https://pt.wikipedia.org/wiki/SIMD), o qual pode acelerar significativamente os programas. Porém, utilizar diversos registros com o SIMD pode nos conduzir a sérios problemas de performance.
+
+O problema de desabilitar o SIMD é que operações com ponto flutuante(decimais) na arquitetura x86_64 exige o SIMD por padrão. Para resolver esse problema, basta ativar a feature `soft-float`, que emula todas as operações com decimais através de funções de software baseadas em inteiros.
+
+Caso queira uma explicação mais detalhada, você poderá encontrá-la [neste post](https://os.phil-opp.com/disable-simd/) do próprio Philipp.
+
+Agora, colocando tudo isso junto, temos o seguinte resultado:
+
+```json
+{
+    "llvm-target": "x86_64-unknown-none",
+    "data-layout": "e-m:e-i64:64-f80:128-n8:16:32:64-S128",
+    "arch": "x86_64",
+    "target-endian": "little",
+    "target-pointer-width": "64",
+    "target-c-int-width": "32",
+    "os": "none",
+    "executables": true,
+    "linker-flavor": "ld.lld",
+    "linker": "rust-lld",
+    "panic-strategy": "abort",
+    "disable-redzone": true,
+    "features": "-mmx,-sse,+soft-float"
+}
+```
+
+##### *Construindo nosso kernel*:
