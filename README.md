@@ -28,6 +28,7 @@ Para cada passo do roadmap terá uma versão traduzida do tutorial seguido.
 ## **Fazendo isso aqui funcionar**
 
 #### *Escolhendo a versão*:
+Antes de escolher a versão, lembre-se de criar o projeto com o `cargo new <nome do projeto>` e navegar até ele.
 Vamos iniciar escolhendo a versão do Rust que será utilizada. O Rust nos dispõe basicamente três versões da release:
 
 - *[nightly]*: Contém os novos recursos experimentais da linguagem. Essa versão recebe uma nova release todos os dias e é a branch *master*.
