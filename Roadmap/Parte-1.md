@@ -1,5 +1,7 @@
 ## **Fazendo isso aqui funcionar**
 
+![system-working](./gifs/parte-1.gif)
+
 ##### [ADDITIONAL_RUST_COMPONENTS]
 - rustup component add rust-src
 - rustup component add llvm-tools-preview
