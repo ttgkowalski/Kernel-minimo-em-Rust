@@ -299,6 +299,13 @@ bootloader = "0.9.8"
 E rodar o seguinte comando: `cargo install bootimage`.
 
 Para o `bootimage` rodar, você precisa instalar o componente *llvm-tools-preview* do rustup. Para fazer isso, basta rodar o comando: `rustup component add llvm-tools-preview`.
+  
+O bootimage utiliza o target padrão do cargo, mas nós estamos utilizando um target customizado, então, para evitar erros na hora da compilação, adicione o nome do JSON que você criou no topo do arquivo `.cargo/config.toml`, ficará algo como isso:
+
+```toml
+[build]
+target = "x86_64-mrk.json.json"
+```
 
 Agora sim podemos compilar nosso kernel. Para isso, execute o seguinte comando:
 
