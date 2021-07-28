@@ -123,5 +123,5 @@ Para lidar com as [interrupções](https://linux-kernel-labs.github.io/refs/head
 A redzone, em resumo, é uma importante otimização da
 **ABI**(Application Binary Interface) do **System V** que permite que as funções usem temporariamente os 128 bytes abaixo de sua estrutura de pilha sem ajustar o ponteiro da pilha.
 
-Caso queira uma explicação mais detalhada, você poderá encontrá-la [neste post](https://os.phil-opp.com/red-zone/) do próprio Philip.
+Caso queira uma explicação mais detalhada, você poderá encontrá-la [neste post](https://os.phil-opp.com/red-zone/) do próprio Philipp.
 
