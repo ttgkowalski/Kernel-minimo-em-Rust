@@ -34,7 +34,7 @@ E coloquei também uma tabela exemplificando como é descrito um caractere atrav
     </tr>
     <tr>
         <td>Bit 15</td>
-        <td>Bit 15</td>
+        <td>Bit 14</td>
         <td>Bit 13</td>
         <td>Bit 12</td>
         <td>Bit 11</td>
